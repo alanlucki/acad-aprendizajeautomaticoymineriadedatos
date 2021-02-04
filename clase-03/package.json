@@ -1,0 +1,37 @@
+{
+  "name": "python",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+
+    "2sci000" : "nodemon --exec python sci000.py",
+    "2sci001" : "nodemon --exec python sci001.py",
+    "2sci002" : "nodemon --exec python sci002.py",
+    "2sci003" : "nodemon --exec python sci003.py",
+    "2sci004" : "nodemon --exec python sci004.py",
+    "2sci005" : "nodemon --exec python sci005.py",
+    "2sci006" : "nodemon --exec python sci006.py",
+    "2sci007" : "nodemon --exec python sci007.py",
+    "2sci008" : "nodemon --exec python sci008.py",
+    "2sci010" : "nodemon --exec python sci010.py",
+    "2sci011" : "nodemon --exec python sci011.py",
+    "2sci012" : "nodemon --exec python sci012.py",
+ 
+    "3sci000" : "nodemon --exec python3 sci000.py",
+    "3sci001" : "nodemon --exec python3 sci001.py",
+    "3sci002" : "nodemon --exec python3 sci002.py",
+    "3sci003" : "nodemon --exec python3 sci003.py",
+    "3sci004" : "nodemon --exec python3 sci004.py",
+    "3sci005" : "nodemon --exec python3 sci005.py",
+    "3sci006" : "nodemon --exec python3 sci006.py",
+    "3sci007" : "nodemon --exec python3 sci007.py",
+    "3sci008" : "nodemon --exec python3 sci008.py",
+    "3sci010" : "nodemon --exec python3 sci010.py",
+    "3sci011" : "nodemon --exec python3 sci011.py",
+    "3sci012" : "nodemon --exec python3 sci012.py"
+ 
+  },
+  "author": "",
+  "license": "ISC"
+}

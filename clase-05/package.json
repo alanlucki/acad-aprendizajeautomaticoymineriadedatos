@@ -1,0 +1,23 @@
+{
+  "name": "python",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "demo": "nodemon --exec  python demo.py",
+    
+    "dc001": "nodemon --exec python dc001.py",
+    "dc002": "nodemon --exec python dc002.py",
+    "dc003": "nodemon --exec python dc003.py",
+    "dc004": "nodemon --exec python dc004.py",
+    
+    "out001": "nodemon --exec python out001.py",
+    "out002": "nodemon --exec python out002.py",
+    "out003": "nodemon --exec python out003.py",
+    "out004": "nodemon --exec python out004.py",
+    "out005": "nodemon --exec python out005.py"
+
+  },
+  "author": "",
+  "license": "ISC"
+}

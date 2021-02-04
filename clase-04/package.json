@@ -1,0 +1,26 @@
+{
+  "name": "python",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "demo": "nodemon --exec  python demo.py",
+    
+    "pp002": "nodemon --exec python pp002.py",
+    "pp003": "nodemon --exec python pp003.py",
+    "pp004": "nodemon --exec python pp004.py",
+    "pp005": "nodemon --exec python pp005.py",
+    "pp006": "nodemon --exec python pp006.py",
+    "pp007": "nodemon --exec python pp007.py",
+    
+    "3pp002": "nodemon --exec python3 pp002.py",
+    "3pp003": "nodemon --exec python3 pp003.py",
+    "3pp004": "nodemon --exec python3 pp004.py",
+    "3pp005": "nodemon --exec python3 pp005.py",
+    "3pp006": "nodemon --exec python3 pp006.py",
+    "3pp007": "nodemon --exec python3 pp007.py"
+
+  },
+  "author": "",
+  "license": "ISC"
+}
