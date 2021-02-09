@@ -11,11 +11,10 @@ def loadData():
     import pandas as pd
     import platform
 
-    if platform.system() == 'Linux':
-        datafile = './data/E000.xlsx'
-    else:
-        datafile = '.\\data\\E000.xlsx'
+    datafile = '.\\data\\E000.xlsx'
 
+    if platform.system() == 'Linux':datafile = datafile.replace("\\", "/")
+    
     return pd.read_excel(datafile, index_col=0)  # lee dataset
 
 def sci001():
@@ -24,7 +23,7 @@ def sci001():
     # print('dataset_ori')
     # print(dataset_ori)
     # print(dataset_ori.shape)
-    #print(dataset_ori)
+    # print(dataset_ori)
     dataset  = dataset_ori.to_numpy()                # numpy
     
     #print('dataset')
@@ -39,8 +38,8 @@ def sci001():
     print('x')
     print(x)
 
-    print('y')
-    print(y)
+    #print('y')
+    #print(y)
 
     
 sci001()

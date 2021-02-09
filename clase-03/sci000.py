@@ -6,11 +6,10 @@ def loadData():
     import pandas as pd
     import platform
 
-    if platform.system() == 'Linux':
-        datafile = './data/E000.xlsx'
-    else:
-        datafile = '.\\data\\E000.xlsx'
+    datafile = '.\\data\\E000.xlsx'
 
+    if platform.system() == 'Linux':datafile = datafile.replace("\\", "/")
+    
     return pd.read_excel(datafile)
 
 def listColumns(x):
@@ -42,9 +41,9 @@ def histogramData(x):
     import matplotlib.pyplot as plt
 
     # histograma de los datos
-    #x.drop(['Title', 'url', 'Elapsed_days'], 1).hist()
-    # plt.show()
-    plt.scatter(x['Title'].values, x['Shares'].values)
+    x.drop(['Title', 'url','comments','Images_video','Elapsed_days','Shares'], 1).hist()
+    plt.show()
+    plt.scatter(x['Word_count'].values, x['Links'].values)
     plt.show()
 
 def linearRegression(x):
@@ -87,9 +86,10 @@ def sci000():
 
     data = loadData()
     #listColumns(data)
-    describeData(data)
-    #histogramData(data)
-    #linearRegression(data)
+    #describeData(data)
+    linearRegression(data)
+    histogramData(data)
+    
     print("------------------------------------------------------------------")
 
 sci000()

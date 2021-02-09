@@ -1,0 +1,24 @@
+{
+  "name": "python",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    
+    "aud001": "nodemon --exec python3 aud001.py",
+    "aud002": "nodemon --exec python3 aud002.py",
+    "aud003": "nodemon --exec python3 aud003.py",
+    
+    "fft001": "nodemon --exec python fft001.py",
+    
+    "sig001": "nodemon --exec python sig001.py",
+    "sig002": "nodemon --exec python sig002.py",
+    "sig003": "nodemon --exec python sig003.py",
+    "sig004": "nodemon --exec python sig004.py",
+    "sig005": "nodemon --exec python sig005.py",
+    "sig006": "nodemon --exec python sig006.py"
+
+  },
+  "author": "",
+  "license": "ISC"
+}
