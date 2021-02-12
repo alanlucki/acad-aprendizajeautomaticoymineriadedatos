@@ -1,0 +1,11 @@
+{
+  "name": "examen-parcial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "descarga-audio": "nodemon --exec python3 01-descarga-audio.py"
+  },
+  "author": "",
+  "license": "ISC"
+}
