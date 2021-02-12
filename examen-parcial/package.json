@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "descarga-audio": "nodemon --exec python3 01-descarga-audio.py"
+    "descarga-audio": "nodemon --exec python3 01-descarga-audio.py",
+    "push": "git push"
+    
   },
   "author": "",
   "license": "ISC"
