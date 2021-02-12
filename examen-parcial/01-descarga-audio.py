@@ -5,11 +5,14 @@ youtube = YouTube(link)
 stream = youtube.streams.filter(only_audio=True).all()
 s.download('descarga')
 '''
+from pytube import YouTube
+    
 
-def descarga():
-    youtube = YouTube(link)
-    stream = youtube.streams.filter(only_audio=True).all()
-    #stream.download('descarga')
+def descarga(link):
+    yt = YouTube(link)
+    
+    #stream = yt.streams.filter(only_audio=True).all()
+    #stream.download()
     
 
 def procesar():
@@ -20,12 +23,14 @@ def procesar():
     print ('Inicio')
     print ('======')
 
-    from pytube import YouTube
     links = [
     
         'https://www.youtube.com/watch?v=KcMBekiA8Sc'
     
     ]
+
+    for x in links:
+        descarga(x)
 
     print ('===')
     print ('Fin')
