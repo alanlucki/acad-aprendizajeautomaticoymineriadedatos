@@ -1,4 +1,5 @@
 import os
+import librosa
 from shutil import rmtree
 from pytube import YouTube
 
@@ -17,7 +18,6 @@ def carpetas():
         os.mkdir('wav')
     except:
         print("ya existe")
-    
 
 def descarga(x,y):
     print('Inicio la descarga de video de ', y)
@@ -30,7 +30,7 @@ def convertir(x):
     origen = './mp4/audio/' + x + '.mp4'
     destino = './wav/' + x
 
-    os.system('ffmpeg -i {} -acodec pcm_s16le -ar 16000 {}.wav'.format(origen,destino ) ) 
+    os.system('ffmpeg  -ss 00:00:00 -t 00:00:20 -i {} -acodec pcm_s16le -ar 44000 {}.wav'.format(origen,destino ) ) 
 
 def procesar():
 
@@ -60,21 +60,20 @@ def procesar():
     nombres = [
         
         '01-beto-ortiz' ,
-        '02-rosamaria-palacios',
-        '03-cesar-hildrebrant',
-        '04-cecilia-valenzuela',
-        '05-gonzalo-nunez',
-        '06-daniel-peredo',
-        '07-marco-aurelio-denegri',
-        '08-phillip-butter',        
-        '09-luis-trisano',
-        '10-erick-osores'
+        '02-rosa-palac',
+        '03-cesa-hildr',
+        '04-ceci-valen',
+        '05-gonz-nunez',
+        '06-dani-pered',
+        '07-marc-aurel',
+        '08-phil-butte',        
+        '09-luis-trisa',
+        '10-eric-osore'
 
     ]
     
  
     for x in range(0, len(links)):
-    #for x in range(0, 1):
         descarga(links[x] ,nombres[x] )
         convertir(nombres[x])
 
@@ -82,5 +81,7 @@ def procesar():
         rmtree("mp4")
     except:
         print("no existe")
+
+    #data, fs = librosa.load('wav/audio001.wav')
 
 procesar()
