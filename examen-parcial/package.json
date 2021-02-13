@@ -6,7 +6,7 @@
   "scripts": {
     "intall-pytube": "nodemon --exec pip3 install pytube",
     "intall-librosa": "nodemon --exec pip3 install librosa",
-    "descarga-audio": "nodemon --exec python3 01-descarga-audio.py",
+    "descarga-audio": "nodemon --exec python3 00-descarga-audio.py",
     "run-all": "npm run intall-pytube && npm run intall-librosa && npm run descarga-audio",
     "push": "git push"
     

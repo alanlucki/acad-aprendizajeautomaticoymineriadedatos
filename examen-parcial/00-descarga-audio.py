@@ -19,6 +19,15 @@ def carpetas():
         rmtree("wav")
     except:
         print("no existe")
+    try:
+        rmtree("datos")
+    except:
+        print("no existe")
+    
+    try:
+        rmtree("estadisticas")
+    except:
+        print("no existe")
     
     try:
         rmtree("mp4")
@@ -121,6 +130,7 @@ def procesar():
     links = [
 
         'https://www.youtube.com/watch?v=I087lKr0Z34&t=10s' , 
+        '''
         'https://www.youtube.com/watch?v=hAqB1WxkZR0&t=10s' ,
         'https://www.youtube.com/watch?v=oNWGGTuAfTo&t=10s' ,
         'https://www.youtube.com/watch?v=iNVrelV5YK0&t=10s' ,
@@ -130,6 +140,7 @@ def procesar():
         'https://www.youtube.com/watch?v=ZmlwAXHVuFU&t=10s',
         'https://www.youtube.com/watch?v=dcEMFdGaPAk&t=10s',
         'https://www.youtube.com/watch?v=RfG59eqe_Zk&t=10s'
+        '''
     ]
     nombres = [
         
@@ -158,6 +169,18 @@ def procesar():
     except:
         print("no existe")
 
+    try:
+        os.mkdir('datos')
+    except:
+        print("ya existe")
+
+    try:
+        os.mkdir('estadisticas')
+    except:
+        print("ya existe")
+
+    arregloatributos = ['atributo-01','atributo-02','atributo-03','atributo-04','atributo-05','atributo-06']
+
     for i in range(0, len(links)):
         arreglo = iterateDirectory('wav/'+nombres[i]+'/') 
            
@@ -184,23 +207,25 @@ def procesar():
         
         for p in range(0, len(matrizP)):
             df = pd.DataFrame(matrizP[p]) 
-            df.to_csv ( nombres[i] +'-' + str(p) + '.csv', index = False, header=True)
+            df.to_csv ( 'datos/' +nombres[i] +'-' + arregloatributos[p] + '.csv', index = False, header=True)
             
-            arreglox ={}
-            arreglox['xxxxxxxx'] = math.sqrt(((df * df ).sum()).mean())
-            arreglox['Media'] = df.mean()     
-            #arreglox['j+2'] = df.mean()     
-            arreglox['Mediana'] = df.median()     
-            #arreglox['j+4'] = df.median()     
-            arreglox['Desv-Est'] = df.std()     
-            arreglox['std/median'] = df.std()/df.median()     
-            arreglox['Kurtosis'] = df.kurtosis()    
-            arreglox['Skewness'] = df.skew()   
+            estadisticos ={}
+            estadisticos['sqrt(mean(sum))'] = math.sqrt(((df * df ).sum()).mean())
+            estadisticos['Media'] = df.mean()     
+            estadisticos['Media-absoluta'] = df.mean().mean()     
+            estadisticos['Mediana'] = df.median()     
+            estadisticos['Mediana-abosluta'] = df.median().median()     
+            estadisticos['Desv-Est'] = df.std()     
+            estadisticos['std/Media'] = df.std()/df.median()     
+            estadisticos['Kurtosis'] = df.kurtosis()    
+            estadisticos['Skewness'] = df.skew()   
                 
             for j in range(0, len(arreglo)+1):
-                arreglox['decil ' + str(j)] = df.quantile(0.10 *j )
+                estadisticos['decil ' + str(j)] = df.quantile(0.10 *j )
 
-            dfx = pd.DataFrame(arreglox) 
+            dfx = pd.DataFrame(estadisticos) 
+            dfx.to_csv ( 'estadisticas/' +nombres[i] +'-' +  arregloatributos[p]  + '.csv', index = False, header=True)
+            
             print( dfx )
             
                 
