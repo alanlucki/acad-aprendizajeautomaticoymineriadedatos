@@ -37,18 +37,44 @@ def convertir(x):
 
 def segmentar(x,y):
     
-    fname = './' + y + '.wav'
     duration = 0
+    origen = 'wav/' + y +'.wav'
     
-    
-    #for i in range(0, x):
-        #origen = './wav/' + x + '.wav'
-        #destino = './wav/' + x + '/' + x + "_" + i
-        #tiempo_inici = i * duracion_segmento
-        #tiempo_final = ( i + 1 ) * duracion_segmento
-        #os.system('ffmpeg  -ss 00:00:' + tiempo_inici +' -t 00:00:' + tiempo_final +' -i {} -acodec pcm_s16le -ar 44000 {}.wav'.format(origen,destino ) ) 
+    with contextlib.closing(wave.open(origen,'r')) as f:
+        frames = f.getnframes()
+        rate = f.getframerate()
+        duration = frames / float(rate)
+        
+    try:
+        os.mkdir('wav/' + y)
+    except:
+        print("ya existe")
 
-    print (fname)
+    for i in range(0, x):
+        
+        destino = 'wav/' + y + '/' +y +'_'+str(i + 1) 
+        tiempo_inici = i * (duration/x)
+        tiempo_final = ( i + 1 ) * (duration/x)
+        print( "=" )
+        print( i )
+        print( "=" )
+
+        str_inci = ''
+        str_fina = ''
+        if int(tiempo_inici) <= 10:
+            str_inci = '0' + str(int(tiempo_inici))
+        else:
+            str_inci = str(int(tiempo_inici))
+
+        if int(tiempo_final) < 10:
+            str_fina = '0' + str(int(tiempo_final))
+        else:
+            str_fina = str(int(tiempo_final))
+        
+        print( 'ffmpeg  -ss 00:00:' + str_inci +' -t 00:00:' + str_fina +' -i {} -acodec pcm_s16le -ar 44000 {}.wav' )
+        #os.system('ffmpeg  -ss 00:00:' + str_inci +' -t 00:00:' + str_fina +' -i {} -acodec pcm_s16le -ar 44000 {}.wav'.format(origen,destino ) ) 
+        
+
     
 def procesar():
 
@@ -95,10 +121,7 @@ def procesar():
     for x in range(0, 1):
         descarga(links[x] ,nombres[x] )
         convertir(nombres[x])
-        
-        #print("Fecuencia = " + fs)
-        #print("Periodo = " + (1.0/fs))
-        segmentar(10,'wav/' + nombres[x])
+        segmentar(10,nombres[x])
         
         #data, fs = librosa.load('wav/' + nombres[x] +'.wav')
         
