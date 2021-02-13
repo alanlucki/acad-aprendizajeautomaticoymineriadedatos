@@ -10,9 +10,30 @@ import contextlib
 import pyaudio
 import xlsxwriter
 import math  
- 
+    
 from shutil import rmtree
 from pytube import YouTube
+    
+carpeta_wav = 'wav/'
+carpeta_datos = 'datos/'
+carpeta_estadisticas = 'estadisticas/'
+        
+
+def carpetas02():
+    try:
+        rmtree("mp4")
+    except:
+        print("no existe")
+
+    try:
+        os.mkdir('datos')
+    except:
+        print("ya existe")
+
+    try:
+        os.mkdir('estadisticas')
+    except:
+        print("ya existe")
 
 def carpetas():
     try:
@@ -53,7 +74,7 @@ def convertir(x):
 def segmentar(x,y):
     
     duration = 0
-    origen = 'wav/' + y +'.wav'
+    origen = carpeta_wav + y +'.wav'
     
     with contextlib.closing(wave.open(origen,'r')) as f:
         frames = f.getnframes()
@@ -61,19 +82,15 @@ def segmentar(x,y):
         duration = frames / float(rate)
         
     try:
-        os.mkdir('wav/' + y)
+        os.mkdir(carpeta_wav + y)
     except:
         print("ya existe")
 
     for i in range(0, x):
         
-        destino = 'wav/' + y + '/' +y +'_'+str(i + 1)
+        destino = carpeta_wav + y + '/' +y +'_'+str(i + 1)
         tiempo_inici = i * (duration/x)
-        #tiempo_final = ( i + 1 ) * (duration/x)
-        
         str_inci = ''
-        #str_fina = ''
-        
         if int(tiempo_inici) <= 10:
             str_inci = '0' + str(int(tiempo_inici))
         else:
@@ -92,41 +109,7 @@ def iterateDirectory(directory):
     contenido = os.listdir(ejemplo_dir)    
     return contenido
 
-def exportarExcel(nombre,matriz):
-    libro = xlsxwriter.Workbook(nombre + '.xlsx')
-    hoja = libro.add_worksheet()
-
-    presupuesto = (matriz)
-
-    # Nos posicionamos en la primera columna de la primera fila
-    row = 0
-    col = 0
-    
-    # Iteramos los datos para ir pintando fila a fila
-    for concepto, precio in (presupuesto):
-        hoja.write(row, col,     concepto)
-        hoja.write(row, col + 1, precio)
-        row += 1
-    
-    #Pintamos la fila de totales
-    hoja.write(row, 0, 'Total:')
-    #hoja.write(row, 1, '=SUM(B1:B7)')
-    
-    #Cerramos el libro
-    libro.close()
-
-
-def procesar():
-
-   
-    print ('===============')
-    print ('Descargar audio')
-    print ('===============')
-    print ('Inicio')
-    print ('======')
-
-    carpetas()
-
+def dataInicial():
     links = [
 
         'https://www.youtube.com/watch?v=I087lKr0Z34&t=10s' , 
@@ -157,37 +140,67 @@ def procesar():
 
     ]
     
+    atributos = [
+        'atributo-01',
+        'atributo-02',
+        'atributo-03',
+        'atributo-04',
+        'atributo-05',
+        'atributo-06'
+    ]
+
+    return links , nombres , atributos
+
+def obtenerEstadisticas(df):
+
+    estadisticos = {}
+    estadisticos['sqrt(mean(sum))'] = math.sqrt(((df * df ).sum()).mean())
+    estadisticos['Media'] = df.mean()     
+    estadisticos['Media-absoluta'] = df.mean().mean()     
+    estadisticos['Mediana'] = df.median()     
+    estadisticos['Mediana-abosluta'] = df.median().median()     
+    estadisticos['Desv-Est'] = df.std()     
+    estadisticos['std/Media'] = df.std()/df.median()     
+    estadisticos['Kurtosis'] = df.kurtosis()    
+    estadisticos['Skewness'] = df.skew()   
+                
+    for j in range(0, 11):
+        estadisticos['decil ' + str(j)] = df.quantile(0.10 *j )
+
+    return estadisticos
+
+def crearCsv(df,ruta):
+    df.to_csv ( ruta, index = False, header=True)
+
+def inicio():
+
+    print ('===============')
+    print ('Descargar audio')
+    print ('===============')
+    print ('Inicio')
+    print ('======')
+
+    
+def procesar():
+    
+    
+    carpetas()
+    links , nombres , atributos = dataInicial()
     
     for x in range(0, len(links)):
-    #for x in range(0, 1):
         descarga(links[x] ,nombres[x] )
         convertir(nombres[x])
         segmentar(10,nombres[x])
     
-    try:
-        rmtree("mp4")
-    except:
-        print("no existe")
-
-    try:
-        os.mkdir('datos')
-    except:
-        print("ya existe")
-
-    try:
-        os.mkdir('estadisticas')
-    except:
-        print("ya existe")
-
-    arregloatributos = ['atributo-01','atributo-02','atributo-03','atributo-04','atributo-05','atributo-06']
-
+    carpetas02()
+    
     for i in range(0, len(links)):
-        arreglo = iterateDirectory('wav/'+nombres[i]+'/') 
+        files = iterateDirectory(carpeta_wav+nombres[i]+'/') 
            
         matrizP = [{},{},{},{},{},{}]        
-        matriz = {} 
-        for j in range(0, len(arreglo)):
-            y, sr = librosa.load('wav/'+nombres[i]+'/'+ arreglo[j] , duration = 1 )
+        
+        for j in range(0, len(files)):
+            y, sr = librosa.load(carpeta_wav+nombres[i]+'/'+ files[j] , duration = 1 )
             onset_env = librosa.onset.onset_strength(y, sr=sr)
             y_harm , y_perc = librosa.effects.hpss(y)
             cent = librosa.feature.spectral_centroid(y=y, sr=sr)
@@ -206,27 +219,12 @@ def procesar():
         print( '=========================================' )
         
         for p in range(0, len(matrizP)):
-            df = pd.DataFrame(matrizP[p]) 
-            df.to_csv ( 'datos/' +nombres[i] +'-' + arregloatributos[p] + '.csv', index = False, header=True)
-            
-            estadisticos ={}
-            estadisticos['sqrt(mean(sum))'] = math.sqrt(((df * df ).sum()).mean())
-            estadisticos['Media'] = df.mean()     
-            estadisticos['Media-absoluta'] = df.mean().mean()     
-            estadisticos['Mediana'] = df.median()     
-            estadisticos['Mediana-abosluta'] = df.median().median()     
-            estadisticos['Desv-Est'] = df.std()     
-            estadisticos['std/Media'] = df.std()/df.median()     
-            estadisticos['Kurtosis'] = df.kurtosis()    
-            estadisticos['Skewness'] = df.skew()   
-                
-            for j in range(0, len(arreglo)+1):
-                estadisticos['decil ' + str(j)] = df.quantile(0.10 *j )
 
-            dfx = pd.DataFrame(estadisticos) 
-            dfx.to_csv ( 'estadisticas/' +nombres[i] +'-' +  arregloatributos[p]  + '.csv', index = False, header=True)
-            
+            df = pd.DataFrame(matrizP[p]) 
+            estadisticas = obtenerEstadisticas(df)
+            dfx = pd.DataFrame(estadisticas) 
+            crearCsv(df,carpeta_datos +nombres[i] +'-' + atributos[p] + '.csv')
+            crearCsv(dfx,carpeta_estadisticas +nombres[i] +'-' +  atributos[p]  + '.csv')
             print( dfx )
-            
-                
+                                
 procesar()
