@@ -12,8 +12,10 @@ def aud001():
    
     # inicializa PyAudio ---------------------------
     p = pyaudio.PyAudio()
+
     
     # propiedades del pyaudio
+    '''
     print('formato   :', pyaudio.paInt8 )
     print('formato   :', pyaudio.paInt16)
     print('formato   :', pyaudio.paInt24)
@@ -24,6 +26,7 @@ def aud001():
     print('tamano muestra:', pyaudio.get_sample_size(pyaudio.paInt24))
     print('tamano muestra:', pyaudio.get_sample_size(pyaudio.paInt32))
     # sys.exit(0)
+    '''
 
     # archivo a leer
     wf = loadData()
@@ -48,8 +51,7 @@ def aud001():
     while len(data) > 0:
         stream.write(data)
         data = wf.readframes(CHUNK)
-        print(len(data))
-
+        
     
     # detener stream (4)
     stream.stop_stream()
