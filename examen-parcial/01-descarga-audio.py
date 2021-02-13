@@ -106,20 +106,6 @@ def exportarExcel(nombre,matriz):
     #Cerramos el libro
     libro.close()
 
-def getAtribute(x1,x2):
-    matriz0 = {} 
-    matriz1 = {} 
-    matriz2 = {} 
-    matriz3 = {} 
-    matriz4 = {}
-
-    for j in range(0, len(x1)):
-        y, fs = librosa.load('wav/'+x2+'/'+ x1[j] )
-        S_full, phase = librosa.magphase(librosa.stft(y))
-        matriz0[j] = y
-        matriz1[j] = S_full
-
-    return [matriz0,matriz1]
 
 def procesar():
 
@@ -132,7 +118,6 @@ def procesar():
 
     carpetas()
 
-    '''
     links = [
 
         'https://www.youtube.com/watch?v=I087lKr0Z34&t=10s' , 
@@ -146,13 +131,6 @@ def procesar():
         'https://www.youtube.com/watch?v=dcEMFdGaPAk&t=10s',
         'https://www.youtube.com/watch?v=RfG59eqe_Zk&t=10s'
     ]
-    '''
-    links = [
-
-        'https://www.youtube.com/watch?v=I087lKr0Z34&t=10s' ,
-        'https://www.youtube.com/watch?v=hAqB1WxkZR0&t=10s' ,
-    ]
-    
     nombres = [
         
         '01-beto-ortiz' ,
@@ -182,19 +160,33 @@ def procesar():
 
     for i in range(0, len(links)):
         arreglo = iterateDirectory('wav/'+nombres[i]+'/') 
-        arregloAtributos = getAtribute(arreglo ,nombres[i]  )
-
+           
+        matrizP = [{},{},{},{},{},{}]        
+        matriz = {} 
+        for j in range(0, len(arreglo)):
+            y, sr = librosa.load('wav/'+nombres[i]+'/'+ arreglo[j] , duration = 1 )
+            onset_env = librosa.onset.onset_strength(y, sr=sr)
+            y_harm , y_perc = librosa.effects.hpss(y)
+            cent = librosa.feature.spectral_centroid(y=y, sr=sr)
+            contrast=librosa.feature.spectral_contrast(y=y_harm,sr=sr)
+            zrate=librosa.feature.zero_crossing_rate(y_harm)
+            
+            matrizP[0][j] = y
+            matrizP[1][j] = y_harm
+            matrizP[2][j] = y_perc
+            matrizP[3][j] = cent[0]
+            matrizP[4][j] = contrast[0]
+            matrizP[5][j] = zrate[0]
+            
         print( '=========================================' )
         print( 'Periodista = ' + nombres[i] )
         print( '=========================================' )
-                
-        for m in range(0, len(arregloAtributos)):
+        
+        for p in range(0, len(matrizP)):
+            df = pd.DataFrame(matrizP[p]) 
+            df.to_csv ( nombres[i] +'-' + str(p) + '.csv', index = False, header=True)
             
-            df = pd.DataFrame(arregloAtributos[m]) 
-            df.to_csv ( nombres[i] + str(m) +'.csv', index = False, header=True)
-
             arreglox ={}
-            
             arreglox['xxxxxxxx'] = math.sqrt(((df * df ).sum()).mean())
             arreglox['Media'] = df.mean()     
             #arreglox['j+2'] = df.mean()     
@@ -204,12 +196,12 @@ def procesar():
             arreglox['std/median'] = df.std()/df.median()     
             arreglox['Kurtosis'] = df.kurtosis()    
             arreglox['Skewness'] = df.skew()   
-            
+                
             for j in range(0, len(arreglo)+1):
                 arreglox['decil ' + str(j)] = df.quantile(0.10 *j )
 
             dfx = pd.DataFrame(arreglox) 
             print( dfx )
-
-
+            
+                
 procesar()
