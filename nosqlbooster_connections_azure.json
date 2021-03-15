@@ -1,0 +1,41 @@
+[
+  {
+    "name": "localhost",
+    "uri": {
+      "hosts": [
+        {
+          "host": "localhost",
+          "port": 27017
+        }
+      ],
+      "options": {},
+      "scheme": "mongodb"
+    },
+    "colorFlag": 0,
+    "authMode": 0,
+    "connectionType": "direct",
+    "certRelated": {}
+  },
+  {
+    "name": "mineria.mongo.cosmos.azure.com",
+    "uri": {
+      "hosts": [
+        {
+          "host": "mineria.mongo.cosmos.azure.com",
+          "port": 10255
+        }
+      ],
+      "options": {
+        "authSource": "admin",
+        "ssl": true
+      },
+      "password": "e0d6d434c1977e8da93e63714ff01da5744ac7a036ac98f5eb7a14e56a36aa6ec4433edc3ca9c36a0d452579222c3f75d3af4ec574d3d00e8276de6fc2588cfb6b7fe7e6550bdc7a159023174c2d4c02cdaf296f7b1dcf7189e886d98ff40418",
+      "scheme": "mongodb",
+      "username": "mineria"
+    },
+    "colorFlag": 1,
+    "authMode": 1,
+    "connectionType": "direct",
+    "certRelated": {}
+  }
+]
